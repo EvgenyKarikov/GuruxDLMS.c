@@ -50,7 +50,11 @@ extern "C" {
 
 #define GET_DLMS_TYPE()
 #define V_VT(X)         ((X)->vt)
-#define GX_UNION(X, Y, Z, S, C)  (X)->size=S;(X)->capacity=C;V_VT(X)=Z;(X)->Y
+#ifdef DLMS_IGNORE_MALLOC    
+    #define GX_UNION(X, Y, Z, S, C)  (X)->size=S;(X)->capacity=C;V_VT(X)=Z;(X)->Y
+#else
+    #define GX_UNION(X, Y, Z, S, C)  V_VT(X)=Z;(X)->Y
+#endif
 #define GX_UINT8(X) GX_UNION(&X, bVal, DLMS_DATA_TYPE_UINT8, 0, 0)
 #define GX_UINT16(X) GX_UNION(&X, uiVal, DLMS_DATA_TYPE_UINT16, 0, 0)
 #define GX_UINT32(X) GX_UNION(&X, ulVal, DLMS_DATA_TYPE_UINT32, 0, 0)
